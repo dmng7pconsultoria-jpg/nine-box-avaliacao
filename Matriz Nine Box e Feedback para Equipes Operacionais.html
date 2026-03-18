@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light" style=""><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avaliação de Desempenho e Potencial - Nine Box</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --primary: #1a2744;
+        --secondary: #f07b25;
+        --light-bg: #f4f6f9;
+        --border: #e2e8f0;
+        --success: #10b981;
+        --warning: #f59e0b;
+        --danger: #ef4444;
+        --text-main: #1f2937;
+        --text-muted: #6b7280;
+      }
+
+      * {
+        box-sizing: border-box;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      body {
+        font-family: 'Inter', sans-serif;
+        background-color: var(--light-bg);
+        color: var(--text-main);
+        line-height: 1.5;
+        margin: 0;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        background: white;
+        padding: 40px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Header */
+      header {
+        border-bottom: 2px solid var(--primary);
+        padding-bottom: 20px;
+        margin-bottom: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo-placeholder {
+        width: 150px;
+        height: 60px;
+        background-color: #eee;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #999;
+        font-weight: bold;
+        border: 1px dashed #ccc;
+      }
+
+      h1 {
+        color: var(--primary);
+        font-size: 24px;
+        margin: 0;
+        text-transform: uppercase;
+        text-align: right;
+      }
+
+      h2 {
+        background-color: var(--primary);
+        color: white;
+        padding: 10px 15px;
+        font-size: 18px;
+        margin-top: 30px;
+        margin-bottom: 15px;
+        border-radius: 4px;
+      }
+
+      /* Form Fields */
+      .form-row {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 15px;
+      }
+
+      .form-group {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      label {
+        font-weight: 600;
+        font-size: 14px;
+        margin-bottom: 5px;
+        color: var(--primary);
+      }
+
+      input[type='text'],
+      input[type='date'],
+      select {
+        padding: 10px;
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        font-family: inherit;
+        font-size: 14px;
+      }
+
+      input:focus,
+      select:focus,
+      textarea:focus {
+        outline: 2px solid var(--secondary);
+        border-color: var(--secondary);
+      }
+
+      /* Assessment Items */
+      .assessment-item {
+        background: #fff;
+        border: 1px solid var(--border);
+        padding: 20px;
+        margin-bottom: 15px;
+        border-radius: 6px;
+      }
+
+      .item-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 15px;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .item-title {
+        font-weight: 700;
+        color: var(--primary);
+        font-size: 16px;
+      }
+
+      .item-desc {
+        font-size: 13px;
+        color: var(--text-muted);
+        display: block;
+        margin-top: 4px;
+        font-style: italic;
+      }
+
+      /* Rating Scale */
+      .rating-container {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .rating-option {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        cursor: pointer;
+        position: relative;
+      }
+
+      .rating-option input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+      }
+
+      .rating-circle {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        transition: all 0.2s;
+        background-color: #e5e7eb;
+        color: #6b7280;
+        border: 2px solid transparent;
+        cursor: pointer;
+      }
+
+      /* Colors for scores 1-5 on hover */
+      .rating-option:hover .rating-circle[data-val='1'] { background-color: #fca5a5; color: #7f1d1d; transform: scale(1.15); border-color: #ef4444; }
+      .rating-option:hover .rating-circle[data-val='2'] { background-color: #fdba74; color: #7c2d12; transform: scale(1.15); border-color: #f97316; }
+      .rating-option:hover .rating-circle[data-val='3'] { background-color: #fde047; color: #713f12; transform: scale(1.15); border-color: #eab308; }
+      .rating-option:hover .rating-circle[data-val='4'] { background-color: #bef264; color: #365314; transform: scale(1.15); border-color: #84cc16; }
+      .rating-option:hover .rating-circle[data-val='5'] { background-color: #6ee7b7; color: #064e3b; transform: scale(1.15); border-color: #10b981; }
+
+      .rating-option input:checked + .rating-circle[data-val='1'] {
+        background-color: #ef4444;
+        color: white;
+        box-shadow: 0 0 0 3px #fee2e2;
+      }
+      .rating-option input:checked + .rating-circle[data-val='2'] {
+        background-color: #f97316;
+        color: white;
+        box-shadow: 0 0 0 3px #ffedd5;
+      }
+      .rating-option input:checked + .rating-circle[data-val='3'] {
+        background-color: #eab308;
+        color: white;
+        box-shadow: 0 0 0 3px #fef9c3;
+      }
+      .rating-option input:checked + .rating-circle[data-val='4'] {
+        background-color: #84cc16;
+        color: white;
+        box-shadow: 0 0 0 3px #ecfccb;
+      }
+      .rating-option input:checked + .rating-circle[data-val='5'] {
+        background-color: #10b981;
+        color: white;
+        box-shadow: 0 0 0 3px #d1fae5;
+      }
+
+      .rating-label {
+        font-size: 10px;
+        margin-top: 5px;
+        text-align: center;
+        max-width: 60px;
+        line-height: 1.2;
+      }
+
+      textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        margin-top: 10px;
+        resize: vertical;
+        min-height: 60px;
+        font-family: inherit;
+        font-size: 13px;
+      }
+
+      /* Results Section */
+      .results-panel {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        gap: 30px;
+        margin-top: 40px;
+        background: #f8fafc;
+        padding: 20px;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+      }
+
+      .score-summary {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      }
+
+      .score-box {
+        margin-bottom: 20px;
+        text-align: center;
+        padding: 15px;
+        background: #f3f4f6;
+        border-radius: 6px;
+      }
+
+      .score-box h4 {
+        margin: 0;
+        color: var(--text-muted);
+        font-size: 12px;
+        text-transform: uppercase;
+      }
+
+      .big-number {
+        font-size: 32px;
+        font-weight: 800;
+        color: var(--primary);
+        margin: 5px 0;
+      }
+
+      .leader-badge {
+        margin-top: 20px;
+        padding: 15px;
+        border-radius: 6px;
+        text-align: center;
+        font-weight: bold;
+        display: none; /* Hidden by default */
+      }
+
+      .leader-badge.show-leader {
+        display: block;
+        background-color: #d1fae5;
+        color: #065f46;
+        border: 1px solid #10b981;
+      }
+
+      .leader-badge.show-normal {
+        display: block;
+        background-color: #f3f4f6;
+        color: #6b7280;
+        border: 1px solid #d1d5db;
+      }
+
+      /* 9 Box Grid */
+      .nine-box-container {
+        display: grid;
+        grid-template-columns: 40px 1fr 1fr 1fr;
+        grid-template-rows: 30px 20px 1fr 1fr 1fr;
+        gap: 4px;
+        width: 100%;
+      }
+
+      .axis-label {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        color: var(--primary);
+        font-size: 12px;
+        text-transform: uppercase;
+      }
+
+      .y-axis {
+        grid-row: 3 / 6;
+        grid-column: 1;
+        writing-mode: vertical-rl;
+        transform: rotate(180deg);
+      }
+
+      .x-axis {
+        grid-row: 1;
+        grid-column: 2 / 5;
+        text-align: center;
+      }
+
+      .col-labels {
+        grid-row: 2;
+        grid-column: 2 / 5;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 4px;
+      }
+
+      .col-label {
+        font-size: 10px;
+        font-weight: 600;
+        text-align: center;
+        padding: 2px 4px;
+        border-radius: 3px;
+        color: white;
+      }
+
+      .col-label.low { background-color: #ef4444; }
+      .col-label.med { background-color: #f59e0b; }
+      .col-label.high { background-color: #10b981; }
+
+      .row-labels {
+        grid-row: 3 / 6;
+        grid-column: 5;
+        display: grid;
+        grid-template-rows: 1fr 1fr 1fr;
+        gap: 4px;
+      }
+
+      .row-label {
+        font-size: 9px;
+        font-weight: 600;
+        text-align: center;
+        writing-mode: vertical-rl;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2px;
+        border-radius: 3px;
+        color: white;
+      }
+
+      .row-label.high { background-color: #10b981; }
+      .row-label.med { background-color: #f59e0b; }
+      .row-label.low { background-color: #ef4444; }
+
+      .grid-box {
+        border: 1px solid #ccc;
+        padding: 10px;
+        font-size: 12px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        border-radius: 4px;
+        min-height: 100px;
+        opacity: 0.4;
+        transition: all 0.3s;
+        position: relative;
+      }
+
+      .grid-box strong {
+        display: block;
+        margin-bottom: 4px;
+        font-size: 13px;
+      }
+
+      .grid-box.active {
+        opacity: 1;
+        transform: scale(1.05);
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        z-index: 10;
+        border-width: 3px;
+        border-color: var(--primary);
+      }
+
+      .grid-box.active::after {
+        content: '📍 ESTÁ AQUI';
+        position: absolute;
+        top: -10px;
+        background: var(--primary);
+        color: white;
+        padding: 2px 6px;
+        border-radius: 10px;
+        font-size: 10px;
+        font-weight: bold;
+      }
+
+      /* Box Colors */
+      .bg-green {
+        background-color: #d1fae5;
+        color: #064e3b;
+      }
+      .bg-lime {
+        background-color: #ecfccb;
+        color: #365314;
+      }
+      .bg-yellow {
+        background-color: #fef9c3;
+        color: #713f12;
+      }
+      .bg-orange {
+        background-color: #ffedd5;
+        color: #7c2d12;
+      }
+      .bg-red {
+        background-color: #fee2e2;
+        color: #7f1d1d;
+      }
+
+      /* Footer */
+      .footer-obs {
+        margin-top: 30px;
+      }
+
+      .signatures {
+        margin-top: 60px;
+        display: flex;
+        justify-content: space-between;
+        gap: 40px;
+      }
+
+      .sign-line {
+        flex: 1;
+        border-top: 1px solid #000;
+        padding-top: 10px;
+        text-align: center;
+        font-size: 14px;
+      }
+
+      .info-box {
+        background-color: #e0f2fe;
+        border-left: 4px solid #0284c7;
+        padding: 15px;
+        margin: 20px 0;
+        font-size: 14px;
+      }
+
+      .print-btn {
+        background-color: var(--secondary);
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 4px;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 20px;
+        font-size: 16px;
+        display: block;
+        width: 100%;
+      }
+
+      .print-btn:hover {
+        background-color: #d96a1a;
+      }
+
+      @media print {
+        .print-btn,
+        .no-print {
+          display: none;
+        }
+        body {
+          padding: 0;
+          background: white;
+        }
+        .container {
+          box-shadow: none;
+          padding: 0;
+        }
+        textarea {
+          border: none;
+          border-bottom: 1px solid #ccc;
+          resize: none;
+        }
+        .results-panel {
+          break-inside: avoid;
+        }
+        .rating-circle {
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+        .grid-box {
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+      }
+    </style>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Open%20Sans:wght@400&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Google%20Sans:wght@400&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Noto%20Sans%20JP:wght@400&amp;display=swap" rel="stylesheet"></head>
+  <body style="">
+    <div class="container">
+      <header>
+        <div class="logo-placeholder">LOGO EMPRESA</div>
+        <div>
+          <h1>Avaliação de Desempenho e Potencial</h1>
+          <div style="text-align: right; font-size: 12px; color: #666; margin-top: 5px">Método Nine-Box Calibrado</div>
+        </div>
+      </header>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nome do Colaborador</label>
+          <input type="text" id="employeeName" placeholder="Nome completo">
+        </div>
+        <div class="form-group">
+          <label>Cargo</label>
+          <select id="jobPosition">
+            <option value="">Selecione o cargo...</option>
+            <option>Ajudante</option>
+            <option>Meio Oficial</option>
+            <option>Auxiliar Eletricista</option>
+            <option>Eletricista</option>
+            <option>Soldador</option>
+            <option>Encanador</option>
+            <option>Encanador Industrial Jr</option>
+            <option>Ajudante Geral PL</option>
+            <option>Segurança do Trabalho</option>
+            <option>Orçamentista</option>
+            <option>Funileiro Industrial</option>
+            <option>Eletricista de Instalações</option>
+            <option>Eletricista Montador</option>
+            <option>Montador Isolantes Térmicos</option>
+            <option>Meio Eletricista Oficial</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Avaliador / Gestor</label>
+          <input type="text" id="evaluatorName" placeholder="Nome do avaliador">
+        </div>
+        <div class="form-group">
+          <label>Data da Avaliação</label>
+          <input type="date" id="evalDate">
+        </div>
+        <div class="form-group">
+          <label>Período / Competência</label>
+          <input type="text" id="period" placeholder="Ex: 1º Trimestre 2025">
+        </div>
+      </div>
+
+      <div class="info-box no-print">
+        <strong>📋 Instruções:</strong> Avalie cada item de 1 a 5 clicando nos círculos. O sistema calculará automaticamente o posicionamento no Nine-Box. Use o campo de observação para justificar sua nota (obrigatório para notas 1 e 5).<br><br>
+        <strong>Escala de Pontos:</strong> &nbsp;
+        <span style="background:#ef4444;color:white;padding:2px 8px;border-radius:10px;font-size:12px;">1 Muito Abaixo</span> &nbsp;
+        <span style="background:#f97316;color:white;padding:2px 8px;border-radius:10px;font-size:12px;">2 Abaixo</span> &nbsp;
+        <span style="background:#eab308;color:white;padding:2px 8px;border-radius:10px;font-size:12px;">3 Dentro do Esperado</span> &nbsp;
+        <span style="background:#84cc16;color:white;padding:2px 8px;border-radius:10px;font-size:12px;">4 Acima</span> &nbsp;
+        <span style="background:#10b981;color:white;padding:2px 8px;border-radius:10px;font-size:12px;">5 Muito Acima</span>
+      </div>
+
+      <!-- SEÇÃO ENTREGA -->
+      <h2>SEÇÃO A: ENTREGA (PERFORMANCE)</h2>
+      <div id="section-delivery">
+        <!-- Q1 -->
+        <div class="assessment-item">
+          <div class="item-header">
+            <div>
+              <span class="item-title">1. Tempo de Entrega</span>
+              <span class="item-desc">Cumpre prazos estabelecidos e entrega as tarefas no tempo acordado.</span>
+            </div>
+            <div class="rating-container">
+              <!-- Gerado via JS ou manual, farei manual para clareza -->
+              <label class="rating-option"><input type="radio" name="q1" value="1">
+                <div class="rating-circle" data-val="1">1</div></label>
+              <label class="rating-option"><input type="radio" name="q1" value="2">
+                <div class="rating-circle" data-val="2">2</div></label>
+              <label class="rating-option"><input type="radio" name="q1" value="3">
+                <div class="rating-circle" data-val="3">3</div></label>
+              <label class="rating-option"><input type="radio" name="q1" value="4">
+                <div class="rating-circle" data-val="4">4</div></label>
+              <label class="rating-option"><input type="radio" name="q1" value="5">
+                <div class="rating-circle" data-val="5">5</div></label>
+            </div>
+          </div>
+          <textarea placeholder="Observação / Justificativa (Obrigatório para notas 1 ou 5)"></textarea>
+        </div>
+
+        <!-- Q2 -->
+        <div class="assessment-item">
+          <div class="item-header">
+            <div>
+              <span class="item-title">2. Qualidade de Entrega</span>
+              <span class="item-desc">Executa o trabalho com qualidade técnica e atenção aos detalhes.</span>
+            </div>
+            <div class="rating-container">
+              <label class="rating-option"><input type="radio" name="q2" value="1">
+                <div class="rating-circle" data-val="1">1</div></label>
+              <label class="rating-option"><input type="radio" name="q2" value="2">
+                <div class="rating-circle" data-val="2">2</div></label>
+              <label class="rating-option"><input type="radio" name="q2" value="3">
+                <div class="rating-circle" data-val="3">3</div></label>
+              <label class="rating-option"><input type="radio" name="q2" value="4">
+                <div class="rating-circle" data-val="4">4</div></label>
+              <label class="rating-option"><input type="radio" name="q2" value="5">
+                <div class="rating-circle" data-val="5">5</div></label>
+            </div>
+          </div>
+          <textarea placeholder="Observação / Justificativa"></textarea>
+        </div>
+
+        <!-- Q3 -->
+        <div class="assessment-item">
+          <div class="item-header">
+            <div>
+              <span class="item-title">3. Elogio do Cliente</span>
+              <span class="item-desc">Recebe feedbacks positivos e elogios por parte do cliente/contratante.</span>
+            </div>
+            <div class="rating-container">
+              <label class="rating-option"><input type="radio" name="q3" value="1">
+                <div class="rating-circle" data-val="1">1</div></label>
+              <label class="rating-option"><input type="radio" name="q3" value="2">
+                <div class="rating-circle" data-val="2">2</div></label>
+              <label class="rating-option"><input type="radio" name="q3" value="3">
+                <div class="rating-circle" data-val="3">3</div></label>
+              <label class="rating-option"><input type="radio" name="q3" value="4">
+                <div class="rating-circle" data-val="4">4</div></label>
+              <label class="rating-option"><input type="radio" name="q3" value="5">
+                <div class="rating-circle" data-val="5">5</div></label>
+            </div>
+          </div>
+          <textarea placeholder="Observação / Justificativa"></textarea>
+        </div>
+
+        <!-- Q4 -->
+        <div class="assessment-item">
+          <div class="item-header">
+            <div>
+              <span class="item-title">4. Entrega Operacional</span>
+              <span class="item-desc">Atinge os resultados operacionais esperados para a função.</span>
+            </div>
+            <div class="rating-container">
+              <label class="rating-option"><input type="radio" name="q4" value="1">
+                <div class="rating-circle" data-val="1">1</div></label>
+              <label class="rating-option"><input type="radio" name="q4" value="2">
+                <div class="rating-circle" data-val="2">2</div></label>
+              <label class="rating-option"><input type="radio" name="q4" value="3">
+                <div class="rating-circle" data-val="3">3</div></label>
+              <label class="rating-option"><input type="radio" name="q4" value="4">
+                <div class="rating-circle" data-val="4">4</div></label>
+              <label class="rating-option"><input type="radio" name="q4" value="5">
+                <div class="rating-circle" data-val="5">5</div></label>
+            </div>
+          </div>
+          <textarea placeholder="Observação / Justificativa"></textarea>
+        </div>
+      </div>
+
+      <!-- SEÇÃO CULTURA -->
+      <h2>SEÇÃO B: CULTURA E POTENCIAL</h2>
+      <div id="section-culture">
+        <!-- Q5 -->
+        <div class="assessment-item">
+          <div class="item-header">
+            <div>
+              <span class="item-title">5. Cultura da Empresa</span>
+              <span class="item-desc">Conhece, pratica e defende os valores e cultura organizacional.</span>
+            </div>
+            <div class="rating-container">
+              <label class="rating-option"><input type="radio" name="q5" value="1">
+                <div class="rating-circle" data-val="1">1</div></label>
+              <label class="rating-option"><input type="radio" name="q5" value="2">
+                <div class="rating-circle" data-val="2">2</div></label>
+              <label class="rating-option"><input type="radio" name="q5" value="3">
+                <div class="rating-circle" data-val="3">3</div></label>
+              <label class="rating-option"><input type="radio" name="q5" value="4">
+                <div class="rating-circle" data-val="4">4</div></label>
+              <label class="rating-option"><input type="radio" name="q5" value="5">
+                <div class="rating-circle" data-val="5">5</div></label>
+            </div>
+          </div>
+          <textarea placeholder="Observação / Justificativa"></textarea>
+        </div>
+
+        <!-- Q6 -->
+        <div class="assessment-item">
+          <div class="item-header">
+            <div>
+              <span class="item-title">6. Comportamento em Campo</span>
+              <span class="item-desc">Mantém postura profissional, respeito e disciplina no ambiente de trabalho.</span>
+            </div>
+            <div class="rating-container">
+              <label class="rating-option"><input type="radio" name="q6" value="1">
+                <div class="rating-circle" data-val="1">1</div></label>
+              <label class="rating-option"><input type="radio" name="q6" value="2">
+                <div class="rating-circle" data-val="2">2</div></label>
+              <label class="rating-option"><input type="radio" name="q6" value="3">
+                <div class="rating-circle" data-val="3">3</div></label>
+              <label class="rating-option"><input type="radio" name="q6" value="4">
+                <div class="rating-circle" data-val="4">4</div></label>
+              <label class="rating-option"><input type="radio" name="q6" value="5">
+                <div class="rating-circle" data-val="5">5</div></label>
+            </div>
+          </div>
+          <textarea placeholder="Observação / Justificativa"></textarea>
+        </div>
+
+        <!-- Q7 -->
+        <div class="assessment-item">
+          <div class="item-header">
+            <div>
+              <span class="item-title">7. Proatividade</span>
+              <span class="item-desc">Antecipa problemas, busca soluções e age sem precisar ser solicitado.</span>
+            </div>
+            <div class="rating-container">
+              <label class="rating-option"><input type="radio" name="q7" value="1">
+                <div class="rating-circle" data-val="1">1</div></label>
+              <label class="rating-option"><input type="radio" name="q7" value="2">
+                <div class="rating-circle" data-val="2">2</div></label>
+              <label class="rating-option"><input type="radio" name="q7" value="3">
+                <div class="rating-circle" data-val="3">3</div></label>
+              <label class="rating-option"><input type="radio" name="q7" value="4">
+                <div class="rating-circle" data-val="4">4</div></label>
+              <label class="rating-option"><input type="radio" name="q7" value="5">
+                <div class="rating-circle" data-val="5">5</div></label>
+            </div>
+          </div>
+          <textarea placeholder="Observação / Justificativa"></textarea>
+        </div>
+
+        <!-- Q8 -->
+        <div class="assessment-item">
+          <div class="item-header">
+            <div>
+              <span class="item-title">8. Facilidade para Adaptação</span>
+              <span class="item-desc">Adapta-se rapidamente a novos ambientes, equipes e situações.</span>
+            </div>
+            <div class="rating-container">
+              <label class="rating-option"><input type="radio" name="q8" value="1">
+                <div class="rating-circle" data-val="1">1</div></label>
+              <label class="rating-option"><input type="radio" name="q8" value="2">
+                <div class="rating-circle" data-val="2">2</div></label>
+              <label class="rating-option"><input type="radio" name="q8" value="3">
+                <div class="rating-circle" data-val="3">3</div></label>
+              <label class="rating-option"><input type="radio" name="q8" value="4">
+                <div class="rating-circle" data-val="4">4</div></label>
+              <label class="rating-option"><input type="radio" name="q8" value="5">
+                <div class="rating-circle" data-val="5">5</div></label>
+            </div>
+          </div>
+          <textarea placeholder="Observação / Justificativa"></textarea>
+        </div>
+
+        <!-- Q9 -->
+        <div class="assessment-item">
+          <div class="item-header">
+            <div>
+              <span class="item-title">9. Conhecimento de Novas Atividades</span>
+              <span class="item-desc">Aprende novas tarefas e funções com facilidade e velocidade.</span>
+            </div>
+            <div class="rating-container">
+              <label class="rating-option"><input type="radio" name="q9" value="1">
+                <div class="rating-circle" data-val="1">1</div></label>
+              <label class="rating-option"><input type="radio" name="q9" value="2">
+                <div class="rating-circle" data-val="2">2</div></label>
+              <label class="rating-option"><input type="radio" name="q9" value="3">
+                <div class="rating-circle" data-val="3">3</div></label>
+              <label class="rating-option"><input type="radio" name="q9" value="4">
+                <div class="rating-circle" data-val="4">4</div></label>
+              <label class="rating-option"><input type="radio" name="q9" value="5">
+                <div class="rating-circle" data-val="5">5</div></label>
+            </div>
+          </div>
+          <textarea placeholder="Observação / Justificativa"></textarea>
+        </div>
+      </div>
+
+      <!-- RESULTADOS -->
+      <div class="results-panel">
+        <div>
+          <div class="score-summary">
+            <div class="score-box">
+              <h4>Score de Entrega</h4>
+              <div class="big-number" id="scoreDelivery">0.0</div>
+              <small>Média Itens 1-4</small>
+            </div>
+            <div class="score-box">
+              <h4>Score de Cultura</h4>
+              <div class="big-number" id="scoreCulture">0.0</div>
+              <small>Média Itens 5-9</small>
+            </div>
+          </div>
+
+          <div id="leaderBadge" class="leader-badge">
+            <div style="font-size: 24px; margin-bottom: 5px">⭐</div>
+            POTENCIAL DE LIDERANÇA IDENTIFICADO
+            <div style="font-size: 11px; font-weight: normal; margin-top: 5px">
+              Alta cultura e indicadores de liderança
+            </div>
+          </div>
+          <div id="normalBadge" class="leader-badge">
+            CONTINUAR ACOMPANHAMENTO
+            <div style="font-size: 11px; font-weight: normal; margin-top: 5px">Plano de desenvolvimento padrão</div>
+          </div>
+
+          <div style="margin-top: 20px; font-size: 12px; color: #333; border: 1px solid #0284c7; background:#e0f2fe; padding: 12px; border-radius: 4px; border-left: 4px solid #0284c7;">
+            <strong>📐 Fórmula do Nine-Box:</strong><br>
+            <span style="display:block;margin-top:6px;">🔵 <b>Score Entrega</b> = Média dos itens 1 a 4</span>
+            <span style="display:block;margin-top:2px;">🟣 <b>Score Cultura</b> = Média dos itens 5 a 9</span>
+            <span style="display:block;margin-top:8px;padding:6px;background:white;border-radius:4px;">
+              <span style="color:#ef4444;">■</span> Baixo: 1,0 – 2,5<br>
+              <span style="color:#f59e0b;">■</span> Médio: 2,6 – 3,7<br>
+              <span style="color:#10b981;">■</span> Alto: 3,8 – 5,0
+            </span>
+            <span style="display:block;margin-top:6px;font-style:italic;">⭐ Potencial de Liderança = Cultura ≥ 3,8 + 2 de 3 indicadores (Proat./Adapt./Aprendiz.) ≥ 4</span>
+          </div>
+        </div>
+
+        <div>
+          <h3 style="text-align: center; margin-top: 0">MATRIZ NINE BOX</h3>
+          <div class="nine-box-container" style="grid-template-columns: 40px 1fr 1fr 1fr 30px;">
+            <div></div>
+            <div class="axis-label x-axis">⬅ ENTREGA (Performance) ➡</div>
+            <div class="axis-label y-axis">POTENCIAL (Cultura)</div>
+            <!-- Column Labels -->
+            <div class="col-labels">
+              <span class="col-label low">🔴 Baixo</span>
+              <span class="col-label med">🟡 Médio</span>
+              <span class="col-label high">🟢 Alto</span>
+            </div>
+
+            <!-- ROW 1 (HIGH POTENTIAL) -->
+            <div id="box-1-1" class="grid-box bg-yellow">
+              <strong>DIAMANTE BRUTO</strong>
+              Investir / Treinar
+            </div>
+            <div id="box-1-2" class="grid-box bg-lime">
+              <strong>ESTRELA EM ASCENSÃO</strong>
+              Desafiar / Mentoria
+            </div>
+            <div id="box-1-3" class="grid-box bg-green">
+              <strong>🏆 TOP TALENT</strong>
+              Promover / Reter
+            </div>
+
+            <!-- ROW 2 (MED POTENTIAL) -->
+            <div id="box-2-1" class="grid-box bg-orange">
+              <strong>PRECISA DE COACHING</strong>
+              Feedback / Alinhar
+            </div>
+            <div id="box-2-2" class="grid-box bg-yellow">
+              <strong>COLABORADOR SÓLIDO</strong>
+              Manter / Motivar
+            </div>
+            <div id="box-2-3" class="grid-box bg-lime">
+              <strong>ALTO PROFISSIONAL</strong>
+              Reconhecer / Especializar
+            </div>
+
+            <!-- ROW 3 (LOW POTENTIAL) -->
+            <div id="box-3-1" class="grid-box bg-red">
+              <strong>EM OBSERVAÇÃO</strong>
+              Acompanhar / Substituir
+            </div>
+            <div id="box-3-2" class="grid-box bg-orange">
+              <strong>PRECISA DESENVOLVER</strong>
+              Plano de Ação
+            </div>
+            <div id="box-3-3" class="grid-box bg-yellow">
+              <strong>EFICIENTE MAS LIMITADO</strong>
+              Manter na Função
+            </div>
+            <!-- Row Labels -->
+            <div class="row-label high" style="grid-row:3; grid-column:5;">ALTO</div>
+            <div class="row-label med" style="grid-row:4; grid-column:5;">MÉDIO</div>
+            <div class="row-label low" style="grid-row:5; grid-column:5;">BAIXO</div>
+          </div>
+          <div id="currentPosition" style="margin-top:10px; padding:10px; background:#f0f4ff; border-radius:6px; text-align:center; font-size:13px; min-height:40px; border:1px dashed #a0aec0; color:#4a5568;">📊 Preencha as avaliações para ver o posicionamento no Nine-Box</div>
+        </div>
+      </div>
+
+      <div class="footer-obs">
+        <h2 style="margin-top:30px;">CONCLUSÃO E PLANO DE AÇÃO</h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+          <div>
+            <label>Pontos Fortes Observados</label>
+            <textarea style="height: 90px" placeholder="Descreva os principais pontos fortes do colaborador..."></textarea>
+          </div>
+          <div>
+            <label>Pontos a Desenvolver</label>
+            <textarea style="height: 90px" placeholder="Descreva as principais áreas de melhoria..."></textarea>
+          </div>
+        </div>
+        <div style="margin-top:15px;">
+          <label>Plano de Desenvolvimento Individual (PDI) / Próximos Passos</label>
+          <textarea style="height: 100px" placeholder="Descreva o plano de ação, metas e prazos acordados com o colaborador..."></textarea>
+        </div>
+        <div style="margin-top:15px;">
+          <label>O colaborador tem interesse em crescer na empresa? &nbsp;
+            <label style="font-weight:normal;cursor:pointer;"><input type="radio" name="growthInterest" value="sim"> Sim</label> &nbsp;
+            <label style="font-weight:normal;cursor:pointer;"><input type="radio" name="growthInterest" value="nao"> Não</label> &nbsp;
+            <label style="font-weight:normal;cursor:pointer;"><input type="radio" name="growthInterest" value="incerto"> A verificar</label>
+          </label>
+        </div>
+        <div style="margin-top:10px;">
+          <label>Nível de Confiabilidade para compor Equipe: &nbsp;
+            <label style="font-weight:normal;cursor:pointer;"><input type="radio" name="trustLevel" value="alta"> Alta</label> &nbsp;
+            <label style="font-weight:normal;cursor:pointer;"><input type="radio" name="trustLevel" value="media"> Média</label> &nbsp;
+            <label style="font-weight:normal;cursor:pointer;"><input type="radio" name="trustLevel" value="baixa"> Baixa</label>
+          </label>
+        </div>
+      </div>
+
+      <div style="background:#f8fafc;border:1px solid #e2e8f0;padding:15px;border-radius:6px;margin-top:20px;font-size:12px;color:#4a5568;">
+        <strong>📌 Legenda Nine-Box — O que fazer com cada perfil:</strong>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:8px;">
+          <div style="background:#d1fae5;padding:8px;border-radius:4px;"><strong>🏆 Top Talent</strong><br>Promover, dar responsabilidade, plano de carreira acelerado.</div>
+          <div style="background:#ecfccb;padding:8px;border-radius:4px;"><strong>⭐ Estrela em Ascensão</strong><br>Desafiar com novos projetos, mentoria de líderes seniores.</div>
+          <div style="background:#ecfccb;padding:8px;border-radius:4px;"><strong>💼 Alto Profissional</strong><br>Reconhecer, especializar, manter engajado na função.</div>
+          <div style="background:#fef9c3;padding:8px;border-radius:4px;"><strong>💎 Diamante Bruto</strong><br>Investir em treinamento técnico, acompanhar de perto.</div>
+          <div style="background:#fef9c3;padding:8px;border-radius:4px;"><strong>🧱 Colaborador Sólido</strong><br>Manter, motivar, plano de desenvolvimento padrão.</div>
+          <div style="background:#ffedd5;padding:8px;border-radius:4px;"><strong>🔧 Precisa de Coaching</strong><br>Feedback estruturado, alinhar expectativas urgentes.</div>
+          <div style="background:#ffedd5;padding:8px;border-radius:4px;"><strong>📈 Precisa Desenvolver</strong><br>Plano de ação, prazo definido para melhora.</div>
+          <div style="background:#fee2e2;padding:8px;border-radius:4px;"><strong>⚠️ Em Observação</strong><br>Decisão crítica: investir ou desligar. Prazo máximo 60 dias.</div>
+          <div style="background:#fef9c3;padding:8px;border-radius:4px;"><strong>🔒 Eficiente mas Limitado</strong><br>Manter na função atual, sem plano de ascensão por ora.</div>
+        </div>
+      </div>
+
+      <div class="signatures">
+        <div class="sign-line">Assinatura do Avaliador / Gestor</div>
+        <div class="sign-line">Assinatura do Colaborador</div>
+        <div class="sign-line">Ciente do RH / Data</div>
+      </div>
+
+      <button class="print-btn" onclick="window.print()">🖨️ Imprimir / Salvar PDF</button>
+    </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const inputs = document.querySelectorAll('input[type="radio"]');
+
+        inputs.forEach((input) => {
+          input.addEventListener('change', calculateScores);
+        });
+
+        function getVal(name) {
+          const el = document.querySelector(`input[name="${name}"]:checked`);
+          return el ? parseInt(el.value) : 0;
+        }
+
+        function calculateScores() {
+          // Delivery Scores
+          const q1 = getVal('q1');
+          const q2 = getVal('q2');
+          const q3 = getVal('q3');
+          const q4 = getVal('q4');
+
+          // Culture Scores
+          const q5 = getVal('q5');
+          const q6 = getVal('q6');
+          const q7 = getVal('q7');
+          const q8 = getVal('q8');
+          const q9 = getVal('q9');
+
+          // Count filled
+          const deliveryCount = [q1, q2, q3, q4].filter((v) => v > 0).length;
+          const cultureCount = [q5, q6, q7, q8, q9].filter((v) => v > 0).length;
+
+          let deliveryAvg = 0;
+          let cultureAvg = 0;
+
+          if (deliveryCount > 0) {
+            deliveryAvg = (q1 + q2 + q3 + q4) / 4; // Divide by total items, assume 0 for unchecked is penalty or handle properly.
+            // Better approach: divide by 4 always to force completion, or divide by filled count?
+            // Standard forms usually require all fields. Let's divide by 4 but only if all filled for accuracy,
+            // but for live preview we divide by 4 to show "progress".
+            // Actually let's just do Sum / 4.
+            deliveryAvg = (q1 + q2 + q3 + q4) / 4;
+          }
+
+          if (cultureCount > 0) {
+            cultureAvg = (q5 + q6 + q7 + q8 + q9) / 5;
+          }
+
+          // Update UI Numbers
+          document.getElementById('scoreDelivery').textContent = deliveryAvg.toFixed(2);
+          document.getElementById('scoreCulture').textContent = cultureAvg.toFixed(2);
+
+          // Determine Box Coordinates
+          // 1=Low, 2=Med, 3=High
+          // Low: 1.0 - 2.5
+          // Med: 2.6 - 3.7
+          // High: 3.8 - 5.0
+
+          let x = 0; // Delivery
+          if (deliveryAvg >= 3.8) x = 3;
+          else if (deliveryAvg >= 2.6) x = 2;
+          else if (deliveryAvg >= 1) x = 1;
+
+          let y = 0; // Culture
+          if (cultureAvg >= 3.8)
+            y = 1; // Row 1 is top
+          else if (cultureAvg >= 2.6) y = 2;
+          else if (cultureAvg >= 1) y = 3;
+
+          // Reset Boxes
+          document.querySelectorAll('.grid-box').forEach((b) => b.classList.remove('active'));
+
+          // Highlight Box
+          const boxNames = {
+            '1-1': 'DIAMANTE BRUTO — Alto Potencial / Baixa Entrega → Investir e Treinar',
+            '1-2': 'ESTRELA EM ASCENSÃO — Alto Potencial / Entrega Média → Desafiar com Mentoria',
+            '1-3': '🏆 TOP TALENT — Alto Potencial / Alta Entrega → Promover e Reter',
+            '2-1': 'PRECISA DE COACHING — Médio Potencial / Baixa Entrega → Alinhar com Feedback',
+            '2-2': 'COLABORADOR SÓLIDO — Médio Potencial / Entrega Média → Manter e Motivar',
+            '2-3': 'ALTO PROFISSIONAL — Médio Potencial / Alta Entrega → Reconhecer e Especializar',
+            '3-1': 'EM OBSERVAÇÃO — Baixo Potencial / Baixa Entrega → Acompanhar de Perto',
+            '3-2': 'PRECISA DESENVOLVER — Baixo Potencial / Entrega Média → Plano de Ação Urgente',
+            '3-3': 'EFICIENTE MAS LIMITADO — Baixo Potencial / Alta Entrega → Manter na Função'
+          };
+          if (x > 0 && y > 0) {
+            const boxId = `box-${y}-${x}`;
+            const activeBox = document.getElementById(boxId);
+            if (activeBox) activeBox.classList.add('active');
+            const posDiv = document.getElementById('currentPosition');
+            if (posDiv) posDiv.innerHTML = `<strong>📍 Posicionamento Atual:</strong> ${boxNames[y+'-'+x] || ''}` + (isLeader ? ' &nbsp;⭐ <strong style="color:#065f46">Potencial de Liderança Identificado!</strong>' : '');
+          } else {
+            const posDiv = document.getElementById('currentPosition');
+            if (posDiv) posDiv.innerHTML = '📊 Preencha as avaliações para ver o posicionamento no Nine-Box';
+          }
+
+          // Leadership Indicator Logic
+          // Potential >= 3.8 AND at least 2 of (Proatividade(q7), Adaptação(q8), Novas(q9) >= 4)
+          const specialTraits = [q7, q8, q9].filter((v) => v >= 4).length;
+          const isLeader = cultureAvg >= 3.8 && specialTraits >= 2;
+
+          const leaderBadge = document.getElementById('leaderBadge');
+          const normalBadge = document.getElementById('normalBadge');
+
+          if (isLeader) {
+            leaderBadge.style.display = 'block';
+            leaderBadge.classList.add('show-leader');
+            normalBadge.style.display = 'none';
+            normalBadge.classList.remove('show-normal');
+          } else if (cultureAvg > 0 || deliveryAvg > 0) {
+            leaderBadge.style.display = 'none';
+            leaderBadge.classList.remove('show-leader');
+            normalBadge.style.display = 'block';
+            normalBadge.classList.add('show-normal');
+          } else {
+            leaderBadge.style.display = 'none';
+            normalBadge.style.display = 'none';
+          }
+        }
+      });
+    </script>
+  
+
+</body></html>
